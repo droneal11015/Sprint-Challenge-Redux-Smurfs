@@ -1,3 +1,12 @@
+import {
+  FETCH_SUCCESS,
+  FETCH_FAILED,
+  ADD_SMURF,
+  ADD_SUCCESS,
+  ADD_FAILED,
+  GET_SMURFS,
+} from '../actions';
+
 /*
   Be sure to import in all of the action types from `../actions`
 */
@@ -13,6 +22,63 @@
    error: null
  }
 */
+
+
+const initialState = {
+  smurfs: [],
+  fetchingSmurfs: false,
+  addingSmurf: false,
+  updatingSmurf: false,
+  deletingSmurf: false,
+  error: null
+}
+
+const reducer = (state = initialState, action) => {
+  switch(action.type){
+    case GET_SMURFS:
+      return {
+        ...state,
+        fetchingSmurfs: true
+      }
+    case FETCH_SUCCESS:
+      return {
+        ...state,
+        fetchingSmurf: false,
+        smurfs: action.payload,
+        error: null
+      }
+    case FETCH_FAILED:
+      return {
+        ...state,
+        fetchingSmurfs: false,
+        error: action.payload
+      }
+    case ADD_SMURF:
+      return{
+        ...state,
+        addingSmurf: true
+      }
+    case ADD_SUCCESS:
+      return{
+        ...state,
+        addingSmurf: false,
+        smurfs: action.payload,
+        error: null
+      }
+    case ADD_FAILED:
+      return{
+        ...state,
+        addingSmurf: false,
+        error: action.payload
+      }
+
+
+      default:
+    return state;  
+  }
+}
+
+export default reducer;
 
 /*
   You'll only need one smurf reducer for this project.
