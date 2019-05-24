@@ -26,3 +26,37 @@ export const GET_SMURFS = 'GET_SMURFS';
 
 const URL = 'http://localhost:3333/smurfs';
 
+export const getSmurfs = () => dispatch => {
+  dispatch({ type: GET_SMURFS });
+  axios 
+    .get(URL)
+    .then(res => {
+      dispatch({
+        type: FETCH_SUCCESS,
+        payload: res.data
+      })
+    })
+    .catch(err => {
+      dispatch({
+        type: FETCH_FAILED,
+        payload: err
+      })
+    })
+}
+
+export const addSmurf = smurfInfo => dispatch => {
+  axios
+    .post(URL, smurfInfo)
+    .then(res => {
+      dispatch({
+        type: ADD_SUCCESS,
+        payload: res.data
+      })
+    })
+    .catch(err => {
+      dispatch({
+        type: ADD_FAILED,
+        payload: err
+      })
+    })
+}
