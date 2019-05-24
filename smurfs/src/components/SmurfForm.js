@@ -1,69 +1,75 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import '../App.css';
-
-
 
 class SmurfForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      age: '',
-      height: ''
-    };
-  }
-
-  addSmurf = event => {
-    event.preventDefault();
-    // add code to create the smurf using the api
-
-    const newSmurf = {
-      name: this.state.name,
-      age: this.state.age,
-      height: this.state.height
+    constructor(props) {
+        super(props);
+        this.state = {
+            newSmurf: {
+                name: '',
+                age: '',
+                height: ''
+            }
+        }
     }
-    axios
-      .post('http://localhost:3333/smurfs', newSmurf)
-      .then(res => {
-        console.log(res.data);
-       this.props.onSubmit(res.data);
-       
-      })
-      .catch(err => console.log(err));
-  }
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+    handleChange = e => {
+        this.setState({
+            newSmurf: {
+                ...this.state.newSmurf,
+                [e.target.name]: e.target.value
+            }
+        });
+    }
 
-  render() {
-    return (
-      <div className="SmurfForm">
-        <form onSubmit={this.addSmurf}>
-          <input
-            onChange={this.handleInputChange}
-            placeholder="name"
-            value={this.state.name}
-            name="name"
-          />
-          <input
-            onChange={this.handleInputChange}
-            placeholder="age"
-            value={this.state.age}
-            name="age"
-          />
-          <input
-            onChange={this.handleInputChange}
-            placeholder="height in cm"
-            value={this.state.height}
-            name="height"
-          />
-          <button type="submit">Add to the village</button>
-        </form>
-      </div>
-    );
-  }
+    handleSubmit = e => {
+        e.preventDefault();
+        if (this.state.newSmurf.name === ''){
+            alert('Enter name')
+        } else if (this.state.newSmurf.height === ''){
+            alert('enter a height')
+        } else if (this.state.newSmurf.age === ''){
+            alert('age must be newborn or older')
+        } else {
+            this.props.addSmurf(this.state.newSmurf)
+            this.setState({
+                newSmurf: {
+                    name: '',
+                    age: '',
+                    height: ''
+                }
+            })
+        }
+    }
+
+
+    render(){
+        return(
+            <form onSubmit={this.handleSubmit}>
+                <input 
+                    type='text'
+                    name='name'
+                    placeholder='Smurf Name'
+                    value={this.state.newSmurf.name}
+                    onChange={this.handleChange}
+                />
+                <input 
+                    type='text'
+                    name='age'
+                    placeholder='Smurf Age'
+                    value={this.state.newSmurf.age}
+                    onChange={this.handleChange}
+                />
+                <input 
+                    type='text'
+                    name='height'
+                    placeholder='Smurf Height in CM'
+                    value={this.state.newSmurf.height}
+                    onChange={this.handleChange}
+                />
+                <button type='submit' value='Add Smurf'>Add Smurf</button>
+            </form>
+        )
+    }
 }
 
 export default SmurfForm;
